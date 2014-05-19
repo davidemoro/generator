@@ -282,6 +282,26 @@ describe('yeoman.generators.Base', function () {
       });
     });
 
+    describe('with options and custom syntax (issue #517)', function () {
+      beforeEach(function (done) {
+        this.src = 'template-buildout.cfg';
+        this.dest = 'write/to/template-buildout.cfg';
+        this.dummy.template(this.src, this.dest, { version: '1.0.5' }, {
+          evaluate: /\{\{([\s\S]+?)\}\}/g,
+          interpolate: /\{\{=([\s\S]+?)\}\}/g,
+          escape: /\{\{-([\s\S]+?)\}\}/g
+        });
+        this.dummy.conflicter.resolve(done);
+      });
+
+      it('it should work without <%= version %>', function () {
+        var body = fs.readFileSync(this.dest, 'utf8');
+        assert.textEqual(body, 'somevar = http://someurl/1.0.5.tgz\n');
+      });
+    });
+
+
+
     describe('with custom tags', function () {
       beforeEach(function (done) {
         this.src = 'custom-template-setting.xml';
