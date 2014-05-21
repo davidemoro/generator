@@ -300,8 +300,6 @@ describe('yeoman.generators.Base', function () {
       });
     });
 
-
-
     describe('with custom tags', function () {
       beforeEach(function (done) {
         this.src = 'custom-template-setting.xml';
